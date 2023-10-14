@@ -1,0 +1,21 @@
+version: '3.3'
+services:
+  database:
+    image: biarms/mysql:5.7
+    container_name: bWAPP-database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: bug
+    volumes:
+      - ./volumes/database:/var/lib/mysql
+  web:
+    image: php:8.0-apache
+    container_name: bWAPP-web
+    restart: always
+    ports:
+      - 20080:80
+    volumes:
+      - ./web/bWAPP:/var/www/html
+    depends_on:
+      - database
+    command: "/bin/sh -c 'docker-php-ext-install mysqli && exec docker-php-entrypoint apache2-foreground'"
