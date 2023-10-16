@@ -19,3 +19,13 @@ services:
     depends_on:
       - database
     command: "/bin/sh -c 'docker-php-ext-install mysqli && exec docker-php-entrypoint apache2-foreground'"
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 20088:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=database
+      - PMA_USER=root
+      - PMA_PASSWORD=bug
