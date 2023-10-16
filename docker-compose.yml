@@ -9,7 +9,7 @@ services:
     volumes:
       - ./volumes/database:/var/lib/mysql
   web:
-    image: php:8.0-apache
+    image: arm64v8/php:5-apache
     container_name: bWAPP-web
     restart: always
     ports:
@@ -18,9 +18,10 @@ services:
       - ./web/bWAPP:/var/www/html
     depends_on:
       - database
-    command: "/bin/sh -c 'docker-php-ext-install mysqli && exec docker-php-entrypoint apache2-foreground'"
+    command: "/bin/sh -c 'docker-php-ext-install mysql mysqli pdo pdo_mysql && exec apache2-foreground'"
   phpmyadmin:
     image: phpmyadmin
+    container_name: bWAPP-phpmyadmin
     restart: always
     ports:
       - 20088:80
