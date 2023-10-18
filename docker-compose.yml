@@ -15,10 +15,14 @@ services:
     ports:
       - 20080:80
     volumes:
-      - ./web/bWAPP:/var/www/html
+      - ./web/bWAPP:/var/www
+      - ./conf/apache2.conf:/etc/apache2/apache2.conf
+      - ./conf/httpd.conf:/etc/apache2/httpd.conf
+      - ./conf/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     depends_on:
       - database
-    command: "/bin/sh -c 'docker-php-ext-install mysql mysqli pdo pdo_mysql && exec apache2-foreground'"
+    command: "/bin/sh -c 'a2enmod dav dav_fs actions alias && docker-php-ext-install mysql mysqli pdo pdo_mysql && exec apache2-foreground'"
   phpmyadmin:
     image: phpmyadmin
     container_name: bWAPP-phpmyadmin
